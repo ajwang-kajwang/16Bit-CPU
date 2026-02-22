@@ -1,0 +1,36 @@
+library IEEE;
+use IEEE.STD_LOGIC_1164.all;
+use IEEE.NUMERIC_STD.all;
+
+entity ROM is
+  port (
+    addr : in std_logic_vector(15 downto 0);
+    data : inout std_logic_vector(15 downto 0)
+  );
+end entity;
+
+architecture behavioral of ROM is
+begin
+  process(addr)
+  begin
+    if (addr(15 downto 12) = "0000") then
+      case to_integer(unsigned(addr(7 downto 0))) is
+        when 16#00# => data <= x"4000"; -- test jmp, jump to 0x10
+        when 16#01# => data <= x"0080"; -- fetch address in 0x80
+        when 16#10# => data <= x"1000"; -- opcode lda_imm
+        when 16#11# => data <= x"0081"; -- addr 0x81
+        when 16#12# => data <= x"1100"; -- opcode ldb_imm
+        when 16#13# => data <= x"0082"; -- addr 0x82
+        when 16#14# => data <= x"2100"; -- opcode sub
+        when 16#15# => data <= x"1200"; -- opcode sta_imm
+        when 16#16# => data <= x"8000"; -- addr 0x8000
+        when 16#80# => data <= x"0010"; -- jump to addr 0x10
+        when 16#81# => data <= x"F55F"; -- lda_imm f55f
+        when 16#82# => data <= x"5FF5"; -- ldb_imm 5ff5
+        when others => data <= x"FFFF"; -- Default value for other addresses
+      end case;
+    else
+      data <= (others => 'Z');
+    end if;
+  end process;
+end behavioral;

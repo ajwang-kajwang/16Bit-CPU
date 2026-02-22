@@ -1,0 +1,20 @@
+DEPTH = 256;
+WIDTH = 16;
+ADDRESS_RADIX = HEX;
+DATA_RADIX = HEX;
+
+CONTENT BEGIN
+    000 : 4000;  -- test jmp, jump to 0x10
+    001 : 0080;  -- fetch address in 0x80
+    010 : 1000;  -- opcode lda_imm
+    011 : 0081;  -- addr 0x81
+    012 : 1100;  -- opcode ldb_imm
+    013 : 0082;  -- addr 0x82
+    014 : 2100;  -- opcode sub
+    015 : 1200;  -- opcode sta_imm
+    016 : 8000;  -- addr 0x8000
+    080 : 0010;  -- jump to addr 0x10
+    081 : F55F;  -- lda_imm f55f
+    082 : 5FF5;  -- ldb_imm 5ff5
+    [083..0FF] : FFFF;  -- Default value for other addresses
+END;
